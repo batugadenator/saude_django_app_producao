@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Projeto Saúde</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin: 2rem; }
+    .cards { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .card { border: 1px solid #ddd; border-radius: 12px; padding: 1rem 1.2rem; min-width: 220px; }
+    table { border-collapse: collapse; width: 100%; }
+    th, td { padding: .5rem; border-bottom: 1px solid #eee; text-align: left; }
+    .muted { color: #666; }
+    code { background: #f4f4f4; padding: 0.1rem 0.3rem; border-radius: 6px; }
+  </style>
+</head>
+<body style="display: grid; grid-template-rows: auto 1fr; min-height: 100vh; margin: 0;">
+  <header style="padding: 1rem 2rem; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center;">
+    <h1 style="margin: 0;">
+      <a href="{% url 'index' %}" style="text-decoration: none; color: inherit;">Projeto Saúde</a>
+    </h1>
+    <nav>
+      {% if user.is_authenticated %}
+        Olá, {{ user.username }} | <a href="{% url 'logout' %}">Sair</a>
+      {% else %}
+        <a href="{% url 'login' %}">Entrar</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main style="padding: 2rem;">
+  <p class="muted">Dashboard inicial (MVP → produção) para acompanhamento de atendimentos e lesões.</p>
+  {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

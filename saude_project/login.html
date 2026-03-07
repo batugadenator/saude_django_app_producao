@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Login</h2>
+  <form method="post" style="max-width: 400px;">
+    {% csrf_token %}
+
+    {% if form.errors %}
+      <p style="color: red;">Seu usuário ou senha não estão corretos. Tente novamente.</p>
+    {% endif %}
+
+    <div style="display: grid; gap: 1em;">
+      {{ form.username.label_tag }}
+      {{ form.username }}
+      {{ form.password.label_tag }}
+      {{ form.password }}
+    </div>
+
+    <button type="submit" style="margin-top: 1.5em;">Entrar</button>
+  </form>
+{% endblock %}

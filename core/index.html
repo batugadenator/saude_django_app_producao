@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projeto Saúde - Dashboard</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            color: #333;
+        }
+        header {
+            background-color: #417690; /* Cor padrão do Django Admin */
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 { margin: 0; font-size: 1.5rem; }
+        .btn-admin {
+            background-color: #f5dd5d;
+            color: #333;
+            padding: 0.5rem 1rem;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        .card h3 { margin-top: 0; color: #666; font-size: 0.9rem; text-transform: uppercase; }
+        .card .number { font-size: 3rem; font-weight: bold; color: #417690; margin: 0.5rem 0; }
+        
+        .section-title { border-bottom: 2px solid #ddd; padding-bottom: 0.5rem; margin-bottom: 1rem; }
+        
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background-color: #f8f9fa; font-weight: 600; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Projeto Saúde - Monitoramento</h1>
+    <a href="/admin/" class="btn-admin">Acessar Área Administrativa</a>
+</header>
+
+<div class="container">
+    <!-- Cards de Resumo -->
+    <div class="cards">
+        <div class="card">
+            <h3>Total de Cadetes</h3>
+            <div class="number">{{ total_cadetes }}</div>
+            <p>Cadastrados na base</p>
+        </div>
+        <div class="card">
+            <h3>Atendimentos</h3>
+            <div class="number">{{ total_atendimentos }}</div>
+            <p>Registros totais</p>
+        </div>
+        <div class="card">
+            <h3>Status do Sistema</h3>
+            <div class="number" style="color: green; font-size: 1.5rem; line-height: 3rem;">Operacional</div>
+            <p>Produção</p>
+        </div>
+    </div>
+
+    <!-- Tabela de Top Lesões -->
+    <h2 class="section-title">Principais Motivos de Atendimento</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Tipo de Lesão</th>
+                <th>Quantidade de Ocorrências</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in top_lesoes %}
+            <tr>
+                <td>{{ item.lesao_tipo }}</td>
+                <td><strong>{{ item.total }}</strong></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="2">Nenhum dado de lesão registrado ainda.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>

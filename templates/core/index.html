@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="cards">
+    <div class="card">
+      <h3>Cadetes</h3>
+      <div style="font-size: 2rem;">{{ total_cadetes }}</div>
+    </div>
+    <div class="card">
+      <h3>Atendimentos</h3>
+      <div style="font-size: 2rem;">{{ total_atendimentos }}</div>
+    </div>
+  </div>
+
+  <h2 style="margin-top:2rem;">Top tipos de lesão</h2>
+  <table>
+    <thead><tr><th>Tipo</th><th>Qtd</th></tr></thead>
+    <tbody>
+      {% for item in por_lesao %}
+        <tr>
+          <td>{{ item.lesao_tipo|default:'(não informado)' }}</td>
+          <td>{{ item.qtd }}</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <h2 style="margin-top:2rem;">Saúde do serviço</h2>
+  <p>Endpoint de healthcheck: <code>/healthz/</code></p>
+{% endblock %}

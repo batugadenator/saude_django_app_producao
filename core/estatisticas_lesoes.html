@@ -1,0 +1,79 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+<a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+&rsaquo; <a href="{% url 'admin:app_list' app_label=opts.app_label %}">{{ opts.app_config.verbose_name }}</a>
+&rsaquo; <a href="{% url 'admin:core_atendimento_changelist' %}">{{ opts.verbose_name_plural|capfirst }}</a>
+&rsaquo; {{ title }}
+</div>
+{% endblock %}
+
+{% block extrahead %}
+{{ block.super }}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  .chart-container {
+    position: relative;
+    margin: auto;
+    height: 400px; /* Altura fixa para os gráficos */
+    width: 80%; /* Largura para os gráficos */
+    margin-bottom: 30px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>{{ title }}</h1>
+<div id="content-main">
+    {% if stats %}
+    {% for stat in stats %}
+      <div class="module">
+        <h2>{{ stat.parte_corpo }}</h2>
+        <div class="chart-container">
+          <canvas id="chart-{{ forloop.counter }}"></canvas>
+        </div>
+      </div>
+    {% endfor %}
+    {% else %}
+    <p>{% trans "Não há dados de atendimentos com lesão e parte do corpo para exibir." %}</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block extrabody %}
+{{ block.super }}
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    {% for stat in stats %}
+      var ctx = document.getElementById('chart-{{ forloop.counter }}').getContext('2d');
+      new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: JSON.parse('{{ stat.labels|json_script:"chart_labels" }}').data,
+          datasets: [{
+            label: 'Quantidade de Lesões',
+            data: JSON.parse('{{ stat.data|json_script:"chart_data" }}').data,
+            backgroundColor: 'rgba(54, 162, 235, 0.6)',
+            borderColor: 'rgba(54, 162, 235, 1)',
+            borderWidth: 1
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            y: {
+              beginAtZero: true,
+              ticks: {
+                precision: 0 // Garante que os ticks do eixo Y sejam inteiros
+              }
+            }
+          }
+        }
+      });
+    {% endfor %}
+  });
+</script>
+{% endblock %}

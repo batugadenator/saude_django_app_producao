@@ -1,0 +1,194 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Projeto Saúde{% endblock %}
+
+{% block content %}
+<div class="container-lg">
+    <!-- Header -->
+    <div class="row mb-5">
+        <div class="col-lg-8">
+            <h1 class="mb-3">
+                <i class="fas fa-chart-line" style="color: #0d5aa7;"></i> Dashboard
+            </h1>
+            <p class="text-muted">Bem-vindo ao sistema de atendimento médico. Acompanhe as estatísticas em tempo real.</p>
+        </div>
+        <div class="col-lg-4 text-end">
+            {% if user.is_authenticated %}
+                <a href="/admin/" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus-circle"></i> Novo Registro
+                </a>
+            {% else %}
+                <a href="/accounts/login/" class="btn btn-primary btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Fazer Login
+                </a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Statistics Cards -->
+    <div class="row g-4 mb-5">
+        <!-- Cadetes Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body stat-card">
+                    <div class="mb-3">
+                        <i class="fas fa-users" style="font-size: 2.5rem; color: #0d5aa7;"></i>
+                    </div>
+                    <div class="stat-number">{{ total_cadetes }}</div>
+                    <div class="stat-label">Cadetes Registrados</div>
+                    <small class="text-muted d-block mt-2">
+                        <i class="fas fa-arrow-up"></i> Sistema ativo
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Atendimentos Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body stat-card">
+                    <div class="mb-3">
+                        <i class="fas fa-stethoscope" style="font-size: 2.5rem; color: #27ae60;"></i>
+                    </div>
+                    <div class="stat-number">{{ total_atendimentos }}</div>
+                    <div class="stat-label">Atendimentos Realizados</div>
+                    <small class="text-muted d-block mt-2">
+                        <i class="fas fa-calendar-alt"></i> Este ano
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Profissionais Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body stat-card">
+                    <div class="mb-3">
+                        <i class="fas fa-user-md" style="font-size: 2.5rem; color: #f16539;"></i>
+                    </div>
+                    <div class="stat-number">{{ profissionais_count }}</div>
+                    <div class="stat-label">Profissionais</div>
+                    <small class="text-muted d-block mt-2">
+                        <i class="fas fa-check-circle"></i> Ativos
+                    </small>
+                </div>
+            </div>
+        </div>
+
+        <!-- Taxa de Ativos Card -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card h-100">
+                <div class="card-body stat-card">
+                    <div class="mb-3">
+                        <i class="fas fa-heartbeat" style="font-size: 2.5rem; color: #e74c3c;"></i>
+                    </div>
+                    <div class="stat-number">{{ taxa_atendimento|default:"--" }}</div>
+                    <div class="stat-label">Taxa de Atividade</div>
+                    <small class="text-muted d-block mt-2">
+                        <i class="fas fa-check"></i> Saudável
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity Section -->
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-clock"></i> Atendimentos Recentes
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="list-group list-group-flush">
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Sistema Operacional</h6>
+                                <small class="text-muted">API integrada e funcional</small>
+                            </div>
+                            <span class="badge bg-success">Ativo</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Banco de Dados</h6>
+                                <small class="text-muted">SQLite com índices otimizados</small>
+                            </div>
+                            <span class="badge bg-success">Ativo</span>
+                        </div>
+                        <div class="list-group-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="mb-1">Dashboard</h6>
+                                <small class="text-muted">Interface moderna com Bootstrap 5</small>
+                            </div>
+                            <span class="badge bg-info">Novo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-info-circle"></i> Informações do Sistema
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Versão Django:</dt>
+                        <dd class="col-sm-8">5.0.14</dd>
+
+                        <dt class="col-sm-4">Framework REST:</dt>
+                        <dd class="col-sm-8">Django REST Framework</dd>
+
+                        <dt class="col-sm-4">Database:</dt>
+                        <dd class="col-sm-8">SQLite + PostgreSQL ready</dd>
+
+                        <dt class="col-sm-4">Status:</dt>
+                        <dd class="col-sm-8">
+                            <span class="badge bg-success">Production Ready</span>
+                        </dd>
+
+                        <dt class="col-sm-4">Autenticação:</dt>
+                        <dd class="col-sm-8">Session + CORS</dd>
+
+                        <dt class="col-sm-4">SSL:</dt>
+                        <dd class="col-sm-8">Disponível para produção</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card bg-light">
+                <div class="card-body">
+                    <h5 class="card-title mb-3">
+                        <i class="fas fa-tools"></i> Ações Rápidas
+                    </h5>
+                    <div class="d-grid gap-2 d-md-flex">
+                        <a href="/admin/core/cadete/" class="btn btn-primary">
+                            <i class="fas fa-users"></i> Gerenciar Cadetes
+                        </a>
+                        <a href="/admin/core/atendimento/" class="btn btn-success">
+                            <i class="fas fa-stethoscope"></i> Registrar Atendimento
+                        </a>
+                        <a href="/api/" class="btn btn-info">
+                            <i class="fas fa-code"></i> Explorar API
+                        </a>
+                        <a href="/admin/" class="btn btn-secondary">
+                            <i class="fas fa-cog"></i> Admin
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
