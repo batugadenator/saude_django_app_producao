@@ -8,8 +8,9 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, []),
 )
 
-if (BASE_DIR / ".env").exists():
-    environ.Env.read_env(str(BASE_DIR / ".env"))
+# Carregar .env primeiro
+if (BASE_DIR / "config" / ".env").exists():
+    environ.Env.read_env(str(BASE_DIR / "config" / ".env"))
 
 SECRET_KEY = env("SECRET_KEY", default="dev-secret-key-change-me" if env("DEBUG", default=False) else "")
 if not SECRET_KEY and not env("DEBUG", default=False):
@@ -40,16 +41,16 @@ INSTALLED_APPS = [
 
 # Jazzmin configuration
 JAZZMIN_SETTINGS = {
-    "site_title": "Administração Saúde",
-    "site_header": "Sistema de Saúde - Administração",
-    "site_brand": "Saúde PM",
+    "site_title": "Administração Cadete Funcional",
+    "site_header": "Sistema Cadete Funcional - Administração",
+    "site_brand": "Cadete Funcional",
     "site_logo": None,
     "login_logo": None,
     "login_logo_dark": None,
     "site_logo_classes": "img-circle",
     "site_icon": None,
-    "welcome_sign": "Bem-vindo ao Sistema de Saúde",
-    "copyright": "Sistema de Saúde PM",
+    "welcome_sign": "Bem-vindo ao Sistema Cadete Funcional (SCF)",
+    "copyright": "Sistema Cadete Funcional - DTSIC AMAN",
     "search_model": ["core.Cadete", "core.Atendimento", "core.Profissional"],
     "user_avatar": None,
     "topmenu_links": [
@@ -100,7 +101,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "saude_project.urls"
+ROOT_URLCONF = "cadete_funcional.urls"
 
 TEMPLATES = [
     {
@@ -118,7 +119,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "saude_project.wsgi.application"
+WSGI_APPLICATION = "cadete_funcional.wsgi.application"
 
 DATABASES = {
     "default": {
@@ -157,6 +158,9 @@ STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # CORS Configuration
@@ -180,6 +184,16 @@ REST_FRAMEWORK = {
 # CORS
 CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
 CORS_ALLOW_ALL_ORIGINS = env.bool("CORS_ALLOW_ALL_ORIGINS", default=False)
+
+# Cache configuration
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}
+
+# CSRF Configuration
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[])
 
 # Redirect after login/logout
 LOGIN_REDIRECT_URL = "/"

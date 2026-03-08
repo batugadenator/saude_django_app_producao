@@ -1,5 +1,4 @@
 from .base import *  # noqa
-from pathlib import Path
 
 DEBUG = env("DEBUG", default=True)
 ALLOWED_HOSTS = env("ALLOWED_HOSTS", default=["*"]).split(",") if isinstance(env("ALLOWED_HOSTS", default=[]), str) else ["*"]

@@ -1,9 +1,16 @@
 import logging
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.db.models import Count, Q
 from .models import Cadete, Atendimento, Profissional
 
 logger = logging.getLogger(__name__)
+
+
+def logout_view(request):
+    """Faz logout do usuário e redireciona para a página inicial."""
+    logout(request)
+    return redirect('index')
 
 
 def index(request):
