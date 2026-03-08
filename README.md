@@ -1,4 +1,4 @@
-# Projeto Saúde — Django + PostgreSQL + Docker (produção)
+# Cadete Funcional — Django + PostgreSQL + Docker (produção)
 
 Este pacote entrega uma base pronta para produção, com:
 - Settings separados (`dev` e `prod`)
