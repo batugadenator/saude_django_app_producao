@@ -1,7 +1,10 @@
 from django.core.management.base import BaseCommand, CommandError
-from django.db import connections
+from django.db import connections, transaction
 from django.db.utils import OperationalError
 from core.models import Cadete
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def split_qualified(name: str):
@@ -82,25 +85,44 @@ class Command(BaseCommand):
             raise CommandError("Não consegui conectar ao banco 'source'. Configure SOURCE_DB_* no .env.") from e
 
         imported = 0
-        for row in rows:
-            data = dict(zip(colnames, row))
-            numero = data.get(col_numero)
-            if numero is None:
-                continue
+        erros = 0
+        skipped = 0
+        
+        for row_idx, row in enumerate(rows):
+            try:
+                data = dict(zip(colnames, row))
+                numero = data.get(col_numero)
+                
+                if numero is None:
+                    skipped += 1
+                    continue
+                
+                # Converte para int com tratamento de erro
+                try:
+                    numero = int(numero)
+                except (ValueError, TypeError):
+                    logger.warning(f"Número inválido na linha {row_idx + 1}: {numero}")
+                    erros += 1
+                    continue
 
-            defaults = {
-                "nome": data.get(col_nome) or f"Cadete {numero}",
-                "nome_de_guerra": data.get(col_nome_guerra),
-                "curso": data.get(col_curso),
-                "ano": data.get(col_ano),
-                "subunidade": data.get(col_subunidade),
-                "pelotao": data.get(col_pelotao),
-                "cmt_curso": data.get(col_cmt_curso),
-                "cmt_subunidade": data.get(col_cmt_sub),
-                "cmt_pelotao": data.get(col_cmt_pel),
-            }
+                defaults = {
+                    "nome": data.get(col_nome) or f"Cadete {numero}",
+                    "nome_de_guerra": data.get(col_nome_guerra),
+                    "curso": data.get(col_curso),
+                    "ano": data.get(col_ano),
+                    "subunidade": data.get(col_subunidade),
+                    "pelotao": data.get(col_pelotao),
+                    "cmt_curso": data.get(col_cmt_curso),
+                    "cmt_subunidade": data.get(col_cmt_sub),
+                    "cmt_pelotao": data.get(col_cmt_pel),
+                }
 
-            Cadete.objects.update_or_create(numero=int(numero), defaults=defaults)
-            imported += 1
+                # Usa transaction para garantir atomicidade
+                with transaction.atomic():
+                    Cadete.objects.update_or_create(numero=numero, defaults=defaults)
+                imported += 1
+            except Exception as e:
+                erros += 1
+                logger.error(f"Erro ao importar cadete linha {row_idx + 1}: {e}")
 
-        self.stdout.write(self.style.SUCCESS(f"Cadetes importados/atualizados do source: {imported}"))
+        self.stdout.write(self.style.SUCCESS(f"Cadetes: {imported} importados/atualizados, {erros} erros, {skipped} pulados"))

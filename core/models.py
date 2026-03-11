@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import constraints
+from django.contrib.auth.models import User
 
 
 class Cadete(models.Model):
@@ -13,6 +14,11 @@ class Cadete(models.Model):
     cmt_curso = models.CharField(max_length=100, blank=True, null=True)
     cmt_subunidade = models.CharField(max_length=100, blank=True, null=True)
     cmt_pelotao = models.CharField(max_length=100, blank=True, null=True)
+    
+    # Auditoria
+    criado_em = models.DateTimeField(auto_now_add=True, db_index=True)
+    atualizado_em = models.DateTimeField(auto_now=True, db_index=True)
+    criado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="cadetes_criados")
 
     class Meta:
         verbose_name = "Cadete"
@@ -40,6 +46,11 @@ class Profissional(models.Model):
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES, db_index=True)
     identificador = models.CharField(max_length=120)
     nome = models.CharField(max_length=255, blank=True, null=True)
+    
+    # Auditoria
+    criado_em = models.DateTimeField(auto_now_add=True, db_index=True)
+    atualizado_em = models.DateTimeField(auto_now=True, db_index=True)
+    criado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="profissionais_criados")
 
     class Meta:
         verbose_name = "Profissional"
@@ -94,7 +105,10 @@ class Atendimento(models.Model):
     alta = models.BooleanField(default=False, db_index=True)
     risco_cirurgico = models.BooleanField(default=False)
 
+    # Auditoria
     criado_em = models.DateTimeField(auto_now_add=True, db_index=True)
+    atualizado_em = models.DateTimeField(auto_now=True, db_index=True)
+    criado_por = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="atendimentos_criados")
 
     class Meta:
         verbose_name = "Atendimento"

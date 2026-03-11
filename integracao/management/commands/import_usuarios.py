@@ -1,6 +1,8 @@
 import json
+import uuid
+import hashlib
 from django.core.management.base import BaseCommand, CommandError
-from django.db import connections
+from django.db import connections, transaction
 from django.db.utils import OperationalError
 from integracao.models import UsuarioImportado
 
@@ -64,29 +66,44 @@ class Command(BaseCommand):
             raise CommandError("Não consegui conectar ao banco 'source'. Configure SOURCE_DB_* no .env.") from e
 
         imported = 0
-        for row in rows:
-            data = dict(zip(colnames, row))
-            external_id = data.get("id") or data.get("pk")
-            if external_id is None:
-                external_id = abs(hash(json.dumps(data, default=str)))
+        erros = 0
+        
+        for row_idx, row in enumerate(rows):
+            try:
+                data = dict(zip(colnames, row))
+                
+                # Gera external_id com fallback melhorado (UUID determinístico ao invés de hash)
+                external_id = data.get("id") or data.get("pk")
+                if external_id is None:
+                    # Usa SHA256 para ID determinístico (evita collision risk do hash)
+                    deterministic_str = json.dumps(data, default=str, sort_keys=True)
+                    external_id = f"import_{hashlib.sha256(deterministic_str.encode()).hexdigest()[:16]}"
 
-            username = data.get("username")
-            email = data.get("email")
-            nome = data.get("nome") or data.get("name")
-            if not nome:
-                fn = data.get("first_name")
-                ln = data.get("last_name")
-                nome = " ".join([x for x in [fn, ln] if x]) or None
+                username = (data.get("username") or "").strip() or None
+                email = (data.get("email") or "").strip() or None
+                
+                nome = data.get("nome") or data.get("name")
+                if not nome:
+                    fn = data.get("first_name") or ""
+                    ln = data.get("last_name") or ""
+                    nome = " ".join([x.strip() for x in [fn, ln] if x]) or None
 
-            ativo = data.get("ativo")
-            if ativo is None:
-                ativo = data.get("is_active")
-            ativo = bool(ativo) if ativo is not None else True
+                ativo = data.get("ativo")
+                if ativo is None:
+                    ativo = data.get("is_active")
+                ativo = bool(ativo) if ativo is not None else True
 
-            UsuarioImportado.objects.update_or_create(
-                external_id=external_id,
-                defaults={"username": username, "email": email, "nome": nome, "ativo": ativo, "raw": data},
-            )
-            imported += 1
+                # Usa update_or_create com atomic transaction
+                with transaction.atomic():
+                    UsuarioImportado.objects.update_or_create(
+                        external_id=external_id,
+                        defaults={"username": username, "email": email, "nome": nome, "ativo": ativo, "raw": data},
+                    )
+                imported += 1
+            except Exception as e:
+                erros += 1
+                import logging
+                logger = logging.getLogger(__name__)
+                logger.error(f"Erro ao importar usuário linha {row_idx + 1}: {e}")
 
-        self.stdout.write(self.style.SUCCESS(f"Usuários importados/atualizados: {imported}"))
+        self.stdout.write(self.style.SUCCESS(f"Usuários importados/atualizados: {imported}, Erros: {erros}"))

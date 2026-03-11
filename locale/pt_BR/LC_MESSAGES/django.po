@@ -1,0 +1,350 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Cadete Funcional 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-03-10 12:00+0000\n"
+"PO-Revision-Date: 2026-03-10 12:00-0300\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Portuguese (Brazil) <EMAIL@ADDRESS>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+# ========== Django Core Auth ==========
+msgid "user"
+msgstr "usuário"
+
+msgid "users"
+msgstr "usuários"
+
+msgid "group"
+msgstr "grupo"
+
+msgid "groups"
+msgstr "grupos"
+
+msgid "permission"
+msgstr "permissão"
+
+msgid "permissions"
+msgstr "permissões"
+
+msgid "Authentication and Authorization"
+msgstr "Autenticação e Autorização"
+
+# User permissions
+msgid "Can view user"
+msgstr "Pode visualizar usuário"
+
+msgid "Can add user"
+msgstr "Pode adicionar usuário"
+
+msgid "Can change user"
+msgstr "Pode alterar usuário"
+
+msgid "Can delete user"
+msgstr "Pode deletar usuário"
+
+# Group permissions
+msgid "Can view group"
+msgstr "Pode visualizar grupo"
+
+msgid "Can add group"
+msgstr "Pode adicionar grupo"
+
+msgid "Can change group"
+msgstr "Pode alterar grupo"
+
+msgid "Can delete group"
+msgstr "Pode deletar grupo"
+
+# Permission permissions
+msgid "Can view permission"
+msgstr "Pode visualizar permissão"
+
+msgid "Can add permission"
+msgstr "Pode adicionar permissão"
+
+msgid "Can change permission"
+msgstr "Pode alterar permissão"
+
+msgid "Can delete permission"
+msgstr "Pode deletar permissão"
+
+# ========== Core App Models ==========
+
+# Cadete
+msgid "cadete"
+msgstr "cadete"
+
+msgid "cadetes"
+msgstr "cadetes"
+
+msgid "Cadete"
+msgstr "Cadete"
+
+msgid "Cadetes"
+msgstr "Cadetes"
+
+msgid "Can view cadete"
+msgstr "Pode visualizar cadete"
+
+msgid "Can add cadete"
+msgstr "Pode adicionar cadete"
+
+msgid "Can change cadete"
+msgstr "Pode alterar cadete"
+
+msgid "Can delete cadete"
+msgstr "Pode deletar cadete"
+
+# Atendimento
+msgid "atendimento"
+msgstr "atendimento"
+
+msgid "atendimentos"
+msgstr "atendimentos"
+
+msgid "Atendimento"
+msgstr "Atendimento"
+
+msgid "Atendimentos"
+msgstr "Atendimentos"
+
+msgid "Can view atendimento"
+msgstr "Pode visualizar atendimento"
+
+msgid "Can add atendimento"
+msgstr "Pode adicionar atendimento"
+
+msgid "Can change atendimento"
+msgstr "Pode alterar atendimento"
+
+msgid "Can delete atendimento"
+msgstr "Pode deletar atendimento"
+
+# Profissional
+msgid "profissional"
+msgstr "profissional"
+
+msgid "profissionais"
+msgstr "profissionais"
+
+msgid "Profissional"
+msgstr "Profissional"
+
+msgid "Profissionais"
+msgstr "Profissionais"
+
+msgid "Can view profissional"
+msgstr "Pode visualizar profissional"
+
+msgid "Can add profissional"
+msgstr "Pode adicionar profissional"
+
+msgid "Can change profissional"
+msgstr "Pode alterar profissional"
+
+msgid "Can delete profissional"
+msgstr "Pode deletar profissional"
+
+# ========== Integracao App ==========
+
+msgid "usuarioImportado"
+msgstr "usuário importado"
+
+msgid "usuariosImportados"
+msgstr "usuários importados"
+
+msgid "Can view usuarioImportado"
+msgstr "Pode visualizar usuário importado"
+
+msgid "Can add usuarioImportado"
+msgstr "Pode adicionar usuário importado"
+
+msgid "Can change usuarioImportado"
+msgstr "Pode alterar usuário importado"
+
+msgid "Can delete usuarioImportado"
+msgstr "Pode deletar usuário importado"
+
+# ========== Common Admin Terms ==========
+
+msgid "add"
+msgstr "adicionar"
+
+msgid "change"
+msgstr "alterar"
+
+msgid "delete"
+msgstr "deletar"
+
+msgid "view"
+msgstr "visualizar"
+
+msgid "administration"
+msgstr "administração"
+
+msgid "home"
+msgstr "início"
+
+msgid "site administration"
+msgstr "administração do site"
+
+msgid "welcome"
+msgstr "bem-vindo"
+
+msgid "yes"
+msgstr "sim"
+
+msgid "no"
+msgstr "não"
+
+msgid "all"
+msgstr "todos"
+
+msgid "none"
+msgstr "nenhum"
+
+msgid "search"
+msgstr "buscar"
+
+msgid "filter"
+msgstr "filtrar"
+
+msgid "save"
+msgstr "salvar"
+
+msgid "cancel"
+msgstr "cancelar"
+
+msgid "delete"
+msgstr "deletar"
+
+msgid "delete selected"
+msgstr "deletar selecionados"
+
+msgid "action"
+msgstr "ação"
+
+msgid "actions"
+msgstr "ações"
+
+msgid "select action"
+msgstr "selecionar ação"
+
+# ========== Model Fields ==========
+
+msgid "created"
+msgstr "criado"
+
+msgid "created at"
+msgstr "criado em"
+
+msgid "created by"
+msgstr "criado por"
+
+msgid "updated"
+msgstr "atualizado"
+
+msgid "updated at"
+msgstr "atualizado em"
+
+msgid "is active"
+msgstr "está ativo"
+
+msgid "is staff"
+msgstr "é staff"
+
+msgid "is superuser"
+msgstr "é superusuário"
+
+msgid "date joined"
+msgstr "data de adesão"
+
+msgid "last login"
+msgstr "último login"
+
+msgid "password"
+msgstr "senha"
+
+msgid "username"
+msgstr "nome de usuário"
+
+msgid "email"
+msgstr "email"
+
+msgid "first name"
+msgstr "nome"
+
+msgid "last name"
+msgstr "sobrenome"
+
+# ========== Months ==========
+
+msgid "January"
+msgstr "Janeiro"
+
+msgid "February"
+msgstr "Fevereiro"
+
+msgid "March"
+msgstr "Março"
+
+msgid "April"
+msgstr "Abril"
+
+msgid "May"
+msgstr "Maio"
+
+msgid "June"
+msgstr "Junho"
+
+msgid "July"
+msgstr "Julho"
+
+msgid "August"
+msgstr "Agosto"
+
+msgid "September"
+msgstr "Setembro"
+
+msgid "October"
+msgstr "Outubro"
+
+msgid "November"
+msgstr "Novembro"
+
+msgid "December"
+msgstr "Dezembro"
+
+# ========== Days ==========
+
+msgid "Monday"
+msgstr "Segunda-feira"
+
+msgid "Tuesday"
+msgstr "Terça-feira"
+
+msgid "Wednesday"
+msgstr "Quarta-feira"
+
+msgid "Thursday"
+msgstr "Quinta-feira"
+
+msgid "Friday"
+msgstr "Sexta-feira"
+
+msgid "Saturday"
+msgstr "Sábado"
+
+msgid "Sunday"
+msgstr "Domingo"
+

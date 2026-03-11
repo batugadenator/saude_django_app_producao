@@ -167,9 +167,11 @@ class Command(BaseCommand):
                 if not nr:
                     continue
                     
-                cadete = Cadete.objects.filter(numero=int(nr)).first()
-                if not cadete:
-                    cadete = Cadete.objects.create(numero=int(nr), nome=f"Cadete {nr}")
+                # Usar get_or_create para evitar race condition
+                cadete, created = Cadete.objects.get_or_create(
+                    numero=int(nr),
+                    defaults={"nome": f"Cadete {nr}"}
+                )
 
                 data = parse_date(ws.cell(r, idx.get("Data")).value)
                 if not data:

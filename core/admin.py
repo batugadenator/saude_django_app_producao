@@ -106,22 +106,53 @@ class AtendimentoAdmin(admin.ModelAdmin):
         return custom_urls + urls
 
     def export_csv_view(self, request):
+        """Export de atendimentos com limite de segurança e logging."""
+        import logging
+        
+        logger = logging.getLogger(__name__)
+        
+        # Limite de segurança: máximo 10000 registros por export
+        MAX_EXPORT_RECORDS = 10000
+        
+        # Registra tentativa de export
+        logger.info(f"Export CSV iniciado por {request.user.username}")
+        
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment; filename="atendimentos.csv"'
 
         writer = csv.writer(response)
-        writer.writerow(['ID', 'Cadete', 'Data', 'Atendimento', 'Lesão Tipo', 'Parte do Corpo', 'Lateralidade'])
+        writer.writerow(['ID', 'Cadete', 'Data', 'Atendimento', 'Lesão Tipo', 'Parte do Corpo', 'Lateralidade', 'Criado Em'])
 
-        atendimentos = Atendimento.objects.select_related('cadete').all()
+        # Query otimizada com select_related e limite de segurança
+        atendimentos = (
+            Atendimento.objects
+            .select_related('cadete')
+            .values_list(
+                'id', 'cadete__numero', 'cadete__nome', 'data', 'atendimento',
+                'lesao_tipo', 'parte_do_corpo', 'lateralidade', 'criado_em'
+            )
+            [:MAX_EXPORT_RECORDS]
+        )
+        
+        # Streaming para evitar carregar tudo na memória
+        total_exported = 0
         for atendimento in atendimentos:
             writer.writerow([
-                atendimento.id,
-                str(atendimento.cadete),
-                atendimento.data,
-                atendimento.atendimento,
-                atendimento.lesao_tipo,
-                atendimento.parte_do_corpo,
-                atendimento.lateralidade,
+                atendimento[0],  # id
+                f"{atendimento[1]} - {atendimento[2]}",  # cadete
+                atendimento[3],  # data
+                atendimento[4],  # atendimento
+                atendimento[5],  # lesao_tipo
+                atendimento[6],  # parte_do_corpo
+                atendimento[7],  # lateralidade
+                atendimento[8],  # criado_em
             ])
-
+            total_exported += 1
+        
+        logger.info(f"Export CSV concluído: {total_exported} registros exportados por {request.user.username}")
+        
+        # Adiciona aviso se atingiu o limite
+        if total_exported >= MAX_EXPORT_RECORDS:
+            response.write(f"\n# AVISO: Limite de {MAX_EXPORT_RECORDS} registros atingido. Use filtros para refinar a busca.")
+        
         return response

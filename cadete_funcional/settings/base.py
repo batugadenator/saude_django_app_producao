@@ -55,13 +55,15 @@ JAZZMIN_SETTINGS = {
     "user_avatar": None,
     "topmenu_links": [
         {"name": "Home", "url": "admin:index", "permissions": ["auth.view_user"]},
+        {"name": "📊 Dashboard", "url": "/", "new_window": False, "permissions": ["auth.view_user"]},
         {"model": "core.Cadete"},
         {"model": "core.Atendimento"},
         {"model": "core.Profissional"},
     ],
     "usermenu_links": [
+        {"name": "📊 Voltar ao Dashboard", "url": "/", "new_window": False},
+        {"name": "🔐 Meu Perfil", "url": "admin:auth_user_change", "new_window": False},
         {"name": "Support", "url": "https://github.com/farridav/django-jazzmin", "new_window": True},
-        {"model": "auth.user"}
     ],
     "show_sidebar": True,
     "navigation_expanded": True,
@@ -153,6 +155,11 @@ LANGUAGE_CODE = "pt-br"
 TIME_ZONE = "America/Sao_Paulo"
 USE_I18N = True
 USE_TZ = True
+
+# Locale paths for translations
+LOCALE_PATHS = [
+    BASE_DIR / "locale",
+]
 
 STATIC_URL = "/static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
