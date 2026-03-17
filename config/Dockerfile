@@ -38,8 +38,8 @@ USER appuser
 EXPOSE 8000
 
 # Define módulo de settings
-ENV DJANGO_SETTINGS_MODULE=saude_project.settings.prod
+ENV DJANGO_SETTINGS_MODULE=cadete_funcional.settings.prod
 
 # Entrypoint
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
-CMD ["gunicorn", "saude_project.wsgi:application", "-c", "gunicorn.conf.py"]
+CMD ["gunicorn", "cadete_funcional.wsgi:application", "-c", "config/gunicorn.conf.py"]
