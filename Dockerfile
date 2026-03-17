@@ -52,9 +52,9 @@ USER appuser
 
 EXPOSE 8000
 
-# Health check via endpoint /healthz/
+# Health check: envia Host header correto para evitar DisallowedHost
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
-    CMD curl -f http://localhost:8000/healthz/ || exit 1
+    CMD curl -f -H "Host: localhost" http://127.0.0.1:8000/healthz/ || exit 1
 
 ENTRYPOINT ["/app/docker/entrypoint.sh"]
 CMD ["gunicorn", "cadete_funcional.wsgi:application", "-c", "config/gunicorn.conf.py"]
