@@ -36,15 +36,15 @@ DJANGO_SETTINGS_MODULE=cadete_funcional.settings.prod
 DEBUG=False
 
 # Gere com: python -c "import secrets; print(secrets.token_urlsafe(50))"
-SECRET_KEY=sua-chave-secreta-muito-longa-aqui
+SECRET_KEY=pC6sXHDTOhb7mHj5Kb9YMou_wv_3q6kuxjR9LR1eWUdR8S7AKByTZpxbhqGETrXQhm4
 
 # IP ou domínio do servidor (separados por vírgula)
-ALLOWED_HOSTS=192.168.1.100,meu-dominio.com
+ALLOWED_HOSTS=192.168.3.60
 
 # Banco de dados
 POSTGRES_DB=saude
 POSTGRES_USER=saude
-POSTGRES_PASSWORD=senha-forte-aqui
+POSTGRES_PASSWORD=highlighter
 POSTGRES_HOST=db
 POSTGRES_PORT=5432
 
