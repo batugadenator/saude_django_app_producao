@@ -28,25 +28,8 @@ COPY . .
 RUN mkdir -p /app/staticfiles /app/media && \
     chmod +x /app/docker/entrypoint.sh
 
-# Coletar arquivos estáticos em tempo de build (SECRET_KEY temporária)
-ARG BUILD_SECRET_KEY=build-time-only-not-used-in-prod
-ENV DJANGO_SETTINGS_MODULE=cadete_funcional.settings.prod \
-    SECRET_KEY=${BUILD_SECRET_KEY} \
-    DEBUG=False \
-    ALLOWED_HOSTS=localhost \
-    POSTGRES_HOST=localhost \
-    POSTGRES_DB=saude \
-    POSTGRES_USER=saude \
-    POSTGRES_PASSWORD=saude \
-    SECURE_SSL_REDIRECT=False
-
-RUN python manage.py collectstatic --noinput --clear 2>/dev/null || true
-
-# Ajustar permissões após collectstatic
+# Ajustar permissões (collectstatic roda no entrypoint com ambiente completo)
 RUN chown -R appuser:appuser /app
-
-# Remover SECRET_KEY temporária do ambiente da imagem final
-ENV SECRET_KEY=""
 
 USER appuser
 

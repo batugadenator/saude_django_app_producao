@@ -10,7 +10,7 @@ python manage.py migrate --noinput
 echo "[✓] Migrações concluídas!"
 
 echo "[*] Coletando arquivos estáticos..."
-python manage.py collectstatic --noinput --clear 2>/dev/null || echo "[!] Aviso: collectstatic teve problemas"
+python manage.py collectstatic --noinput --clear
 echo "[✓] Arquivos estáticos coletados!"
 
 # Import automático opcional do banco externo
