@@ -2,13 +2,12 @@
 # Cadete Funcional (SCF) — Stack para Portainer
 # =============================================================================
 # Como usar no Portainer:
-#   1. Stacks → Add Stack → "Repository" ou "Upload"
-#   2. Cole o conteúdo deste arquivo
-#   3. Preencha as variáveis de ambiente na seção "Environment variables"
-#   4. Deploy the stack
-#
-# Variáveis obrigatórias (setar no Portainer ou no arquivo .env):
-#   SECRET_KEY, POSTGRES_PASSWORD, ALLOWED_HOSTS
+#   1. Stacks → Add Stack → "Repository" (branch: master) ou "Web editor"
+#   2. Na aba "Environment variables" do Portainer, defina:
+#        SECRET_KEY=<chave-secreta-longa>
+#        POSTGRES_PASSWORD=<senha-forte>
+#        ALLOWED_HOSTS=<ip-ou-dominio-do-servidor>
+#   3. Deploy the stack
 # =============================================================================
 
 services:
@@ -21,11 +20,21 @@ services:
       context: .
       dockerfile: Dockerfile
     image: cadete-funcional-web:latest
-    env_file:
-      - config/.env
     environment:
       DJANGO_SETTINGS_MODULE: cadete_funcional.settings.prod
+      DEBUG: "False"
+      SECRET_KEY: ${SECRET_KEY}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
       POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: ${POSTGRES_DB:-saude}
+      POSTGRES_USER: ${POSTGRES_USER:-saude}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      SECURE_SSL_REDIRECT: "False"
+      SESSION_COOKIE_SECURE: "False"
+      CSRF_COOKIE_SECURE: "False"
+      USE_X_FORWARDED_HOST: "True"
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
     depends_on:
       db:
         condition: service_healthy
@@ -47,12 +56,10 @@ services:
   # ----------------------------------------------------------
   db:
     image: postgres:16-alpine
-    env_file:
-      - config/.env
     environment:
       POSTGRES_DB: ${POSTGRES_DB:-saude}
       POSTGRES_USER: ${POSTGRES_USER:-saude}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no .env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 5s
